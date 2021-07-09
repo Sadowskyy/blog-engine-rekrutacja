@@ -42,9 +42,15 @@ class Post
         $this->content = $content;
     }
 
-    public static function create(string $author, string $description)
+    public static function create(string $author, string $content)
     {
-        return new Post($author, substr($description, 0, 59), $description);
+        return new Post($author, substr($content, 0, 59), $description);
+    }
+
+    public function updateContent(string $content)
+    {
+        $this->content = $content;
+        $this->shortContent = substr($content, 0, 59);
     }
 
     public function getId(): int

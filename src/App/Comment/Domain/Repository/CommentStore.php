@@ -7,20 +7,22 @@ namespace App\App\Comment\Domain\Repository;
 
 use App\App\Comment\Domain\Comment;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 
 final class CommentStore implements CommentRepositoryInterface
 {
-    private EntityRepository $objectRepository;
-
     private EntityManagerInterface $entityManager;
 
-    private EntityRepository $repository;
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
     public function get(int $commentId): Comment
     {
-        $this->objectRepository
-            ->createQueryBuilder('comment')
+        $this->entityManager
+            ->createQueryBuilder()
+            ->select('comment')
+            ->from('comment', 'comment')
             ->where('comment.id = :id')
             ->setParameter('id', $commentId);
     }

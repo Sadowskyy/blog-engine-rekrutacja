@@ -6,28 +6,23 @@ namespace App\App\Post\Domain\Repository;
 
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use App\App\Post\Domain\Post;
 
 final class PostStore implements PostRepositoryInterface
 {
-    private EntityRepository $objectRepository;
-
     private EntityManagerInterface $entityManager;
 
-    private EntityRepository $repository;
-
-    public function __construct(EntityRepository $objectRepository, EntityManagerInterface $entityManager, EntityRepository $repository)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->objectRepository = $objectRepository;
         $this->entityManager = $entityManager;
-        $this->repository = $repository;
     }
 
     public function get(int $postId): Post
     {
-        $this->objectRepository
-            ->createQueryBuilder('post')
+         $this->entityManager
+            ->createQueryBuilder()
+            ->select('post')
+            ->from('post', 'post')
             ->where('post.id = :id')
             ->setParameter('id', $postId);
     }

@@ -8,15 +8,32 @@ use App\App\Comment\Domain\Comment;
 
 class Post
 {
-    private int $id;
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
 
-    private string $author;
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $author;
 
-    private string $shortContent;
+    /**
+     * @ORM\Column(type="string", length=60)
+     */
+    private $shortContent;
 
-    private string $content;
+    /**
+     * @ORM\Column(type="string", length=1000)
+     */
+    private $content;
 
-    private $comments = [];
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="commentedPost")
+     */
+    private array $comments = [];
 
     public function __construct(string $author, string $shortContent, string $content)
     {

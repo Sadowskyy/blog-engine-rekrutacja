@@ -8,12 +8,27 @@ use App\App\Post\Domain\Post;
 
 class Comment
 {
-    private int $id;
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
 
-    private string $author;
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $author;
 
-    private string $content;
+    /**
+     * @ORM\Column(type="string", length=200)
+     */
+    private $content;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     */
     private Post $commentedPost;
 
     public function __construct(string $author, string $content, Post $commentedPost)
@@ -46,5 +61,12 @@ class Comment
     public function getCommentedPost(): Post
     {
         return $this->commentedPost;
+    }
+
+    public function commentPost(Post $post)
+    {
+        if ($this->commentedPost === null) {
+            $this->commentedPost = $post;
+        }
     }
 }

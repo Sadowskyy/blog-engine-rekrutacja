@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\App\Post\Domain\Repository;
 
 
-use App\App\Shared\Infrastructure\Peristance\Read\Repository\MySqlRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use App\App\Post\Domain\Post;
 
 final class PostStore implements PostRepositoryInterface
 {
@@ -35,6 +35,12 @@ final class PostStore implements PostRepositoryInterface
     public function store(Post $post): void
     {
         $this->entityManager->persist($post);
+        $this->entityManager->flush();
+    }
+
+    public function remove(Post $post): void
+    {
+        $this->entityManager->remove($post);
         $this->entityManager->flush();
     }
 }

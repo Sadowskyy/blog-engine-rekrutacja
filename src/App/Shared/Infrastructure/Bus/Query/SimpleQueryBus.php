@@ -27,6 +27,14 @@ class SimpleQueryBus implements QueryBusInterface
 
     private FindBySpecifiedNumberHandler $findBySpecifiedNumberHandler;
 
+    public function __construct(FindCommentsByPostIdHandler $findCommentsByPostIdHandler, FindByCommentIdHandler $findByCommentIdHandler, FindPostByPostIdHandler $findPostByPostIdHandler, FindBySpecifiedNumberHandler $findBySpecifiedNumberHandler)
+    {
+        $this->findCommentsByPostIdHandler = $findCommentsByPostIdHandler;
+        $this->findByCommentIdHandler = $findByCommentIdHandler;
+        $this->findPostByPostIdHandler = $findPostByPostIdHandler;
+        $this->findBySpecifiedNumberHandler = $findBySpecifiedNumberHandler;
+    }
+
     public function ask(QueryInterface $query): mixed
     {
         if ($query instanceof FindCommentsByPostIdQuery) {
@@ -38,8 +46,8 @@ class SimpleQueryBus implements QueryBusInterface
         if ($query instanceof FindPostByPostId) {
             return $this->findPostByPostIdHandler->handle($query);
         }
-        if ($query instanceof FindPostsBySpecifiedNumberQuery) {
-            return $this->findBySpecifiedNumberHandler->handle($query);
-        }
+//        if ($query instanceof FindPostsBySpecifiedNumberQuery) {
+//            return $this->findBySpecifiedNumberHandler->handle($query);
+//        }
     }
 }

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\App\Post\Application\Command\CreatePost;
 
 
-use App\App\Post\Domain\Post;
 use App\App\Post\Domain\Repository\PostRepositoryInterface;
 use App\App\Post\Domain\Validator\ContentValidator;
 use App\App\Shared\Application\Command\CommandHandlerInterface;
+use App\App\Shared\Domain\Post;
 
 final class CreatePostHandler implements CommandHandlerInterface
 {
@@ -26,6 +26,7 @@ final class CreatePostHandler implements CommandHandlerInterface
     {
         if ($this->contentValidator->isValid($command->getContent()) === true) {
             $post = Post::create($command->getAuthor(), $command->getContent());
+
             $this->postRepository->store($post);
         }
     }

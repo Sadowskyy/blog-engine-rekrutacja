@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace App\App\Comment\Domain\Repository;
 
 
-use App\App\Comment\Domain\Comment;
+use App\App\Shared\Domain\Comment;
 
 interface CommentRepositoryInterface
 {

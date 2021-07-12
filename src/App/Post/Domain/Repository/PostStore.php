@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\App\Post\Domain\Repository;
 
 
+use App\App\Shared\Domain\Post;
 use Doctrine\ORM\EntityManagerInterface;
-use App\App\Post\Domain\Post;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 final class PostStore implements PostRepositoryInterface
 {
@@ -19,12 +20,18 @@ final class PostStore implements PostRepositoryInterface
 
     public function get(int $postId): Post
     {
-         $this->entityManager
-            ->createQueryBuilder()
-            ->select('post')
-            ->from('post', 'post')
-            ->where('post.id = :id')
-            ->setParameter('id', $postId);
+        $sql = 'SELECT * from post WHERE id = ?';
+        $state = $this->entityManager->getConnection()->prepare($sql);
+        $state->bindValue(1, $postId);
+
+        $state->execute();
+        $post = $state->fetchAll();
+
+        return Post::createView(
+            $post['0']['author'],
+            $post['0']['short_content'],
+            $post['0']['content'],
+            (int) $post['0']['id']);
     }
 
     public function store(Post $post): void

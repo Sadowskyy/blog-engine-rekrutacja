@@ -4,27 +4,40 @@ declare(strict_types=1);
 
 namespace App\App\Comment\Domain\Repository;
 
-
-use App\App\Comment\Domain\Comment;
+use App\App\Post\Domain\Repository\PostStore;
+use App\App\Shared\Domain\Comment;
+use App\App\Shared\Domain\Post;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class CommentStore implements CommentRepositoryInterface
 {
     private EntityManagerInterface $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    private PostStore $postStore;
+
+    public function __construct(EntityManagerInterface $entityManager, PostStore $postStore)
     {
         $this->entityManager = $entityManager;
+        $this->postStore = $postStore;
     }
 
     public function get(int $commentId): Comment
     {
-        $this->entityManager
-            ->createQueryBuilder()
-            ->select('comment')
-            ->from('comment', 'comment')
-            ->where('comment.id = :id')
-            ->setParameter('id', $commentId);
+        $sql = 'SELECT * from comment WHERE id = ?';
+        $state = $this->entityManager->getConnection()->prepare($sql);
+        $state->bindValue(1, $commentId);
+
+        $state->execute();
+        $comment = $state->fetchAll();
+
+        if($comment['0'] === null){
+            throw new \Exception();
+        }
+
+        return Comment::createView(
+            $comment['0']['author'], $comment['0']['content'],
+            $this->postStore->get((int) $comment['0']['commented_post_id'])
+        );
     }
 
     public function store(Comment $comment): void

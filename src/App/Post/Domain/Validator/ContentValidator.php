@@ -13,7 +13,7 @@ class ContentValidator
 
     public function isValid(string $content): bool
     {
-        if ($content > self::BLOG_CONTENT_LENGTH) {
+        if (strlen($content) > self::BLOG_CONTENT_LENGTH) {
             throw new TooLongPostContentException();
         }
 

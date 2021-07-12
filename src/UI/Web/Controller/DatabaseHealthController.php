@@ -17,7 +17,7 @@ class DatabaseHealthController
     {
         $this->mysqlDatabase = $mysqlDatabase;
     }
-    
+
     public function __invoke(Request $request): Response
     {
         $mysql = null;

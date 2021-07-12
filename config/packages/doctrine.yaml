@@ -1,5 +1,6 @@
 doctrine:
     dbal:
+        server_version: 5.7
         url: '%env(resolve:DATABASE_URL)%'
 
         # IMPORTANT: You MUST configure your server version,
@@ -14,5 +15,5 @@ doctrine:
                 is_bundle: false
                 type: annotation
                 dir: '%kernel.project_dir%/src/App/Shared/Domain/'
-                prefix: 'App\Shared\Domain\'
+                prefix: 'App\App\Shared\Domain\'
                 alias: App

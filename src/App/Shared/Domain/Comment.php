@@ -1,11 +1,17 @@
 <?php
 
+declare(strict_types=1);
 
-namespace App\App\Comment\Domain;
+namespace App\App\Shared\Domain;
 
 
-use App\App\Post\Domain\Post;
+use Doctrine\ORM\Mapping as ORM;
 
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="comment")
+ */
 class Comment
 {
     /**
@@ -13,23 +19,23 @@ class Comment
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    public int $id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $author;
+    public string $author;
 
     /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(type="text", length=200)
      */
-    private $content;
+    public string $content;
 
     /**
      * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
-    private Post $commentedPost;
+    public Post $commentedPost;
 
     public function __construct(string $author, string $content, Post $commentedPost)
     {
@@ -41,6 +47,11 @@ class Comment
     public static function create(string $content, string $author, Post $commentedPost): Comment
     {
         return new Comment($author, $content, $commentedPost);
+    }
+
+    public static function createView(string $author, string $content, Post $post)
+    {
+        return new Comment($author, $content, $post);
     }
 
     public function getId(): int
@@ -68,5 +79,10 @@ class Comment
         if ($this->commentedPost === null) {
             $this->commentedPost = $post;
         }
+    }
+
+    public function addCommentedPost(Post $post)
+    {
+        $this->commentedPost = $post;
     }
 }

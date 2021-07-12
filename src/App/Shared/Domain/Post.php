@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types=1);
 
-namespace App\App\Post\Domain;
+namespace App\App\Shared\Domain;
 
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
-use App\App\Comment\Domain\Comment;
-
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="post")
+ */
 class Post
 {
     /**
@@ -13,27 +18,28 @@ class Post
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    public int $id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $author;
+    public string $author;
 
     /**
      * @ORM\Column(type="string", length=60)
      */
-    private $shortContent;
+    public string $shortContent;
 
     /**
-     * @ORM\Column(type="string", length=1000)
+     * @ORM\Column(type="text", length=1000)
      */
-    private $content;
+    public string $content;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="commentedPost")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private array $comments = [];
+    public Collection $comments;
 
     public function __construct(string $author, string $shortContent, string $content)
     {
@@ -42,9 +48,17 @@ class Post
         $this->content = $content;
     }
 
-    public static function create(string $author, string $content)
+    public static function create(string $author, string $content): Post
     {
-        return new Post($author, substr($content, 0, 59), $description);
+        return new Post($author, substr($content, 0, 59), $content);
+    }
+
+    public static function createView(?string $author, ?string $shortContent, ?string $content, ?int $id): Post
+    {
+        $post = new Post($author, $shortContent, $content);
+        $post->setId($id);
+
+        return $post;
     }
 
     public function updateContent(string $content)
@@ -73,13 +87,34 @@ class Post
         return $this->content;
     }
 
-    public function getComments(): array
+    public function getComments(): Collection
     {
         return $this->comments;
     }
 
     public function addComment(Comment $comment): void
     {
-        array_push($this->comments, $comment);
+        $this->comments->add($comment);
     }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function updateAuthor(string $author): void
+    {
+        $this->author = $author;
+    }
+
+    public function updateShortContent(string $shortContent): void
+    {
+        $this->shortContent = $shortContent;
+    }
+
+    public function setComments(Collection $comments): void
+    {
+        $this->comments = $comments;
+    }
+
 }

@@ -46,8 +46,10 @@ class SimpleQueryBus implements QueryBusInterface
         if ($query instanceof FindPostByPostId) {
             return $this->findPostByPostIdHandler->handle($query);
         }
-//        if ($query instanceof FindPostsBySpecifiedNumberQuery) {
-//            return $this->findBySpecifiedNumberHandler->handle($query);
-//        }
+        if ($query instanceof FindPostsBySpecifiedNumberQuery) {
+            return $this->findBySpecifiedNumberHandler->handle($query);
+        }
+
+        return null;
     }
 }

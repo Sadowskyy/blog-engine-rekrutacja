@@ -48,6 +48,7 @@ final class CommentStore implements CommentRepositoryInterface
 
     public function remove(Comment $comment): void
     {
+        //TODO idk why it dosent work
         $this->entityManager->remove($comment);
         $this->entityManager->flush();
     }

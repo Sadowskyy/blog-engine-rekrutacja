@@ -7,7 +7,6 @@ namespace App\App\Post\Domain\Repository;
 
 use App\App\Shared\Domain\Post;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\ResultSetMapping;
 
 final class PostStore implements PostRepositoryInterface
 {
@@ -20,7 +19,7 @@ final class PostStore implements PostRepositoryInterface
 
     public function get(int $postId): Post
     {
-        $sql = 'SELECT * from post WHERE id = ?';
+        $sql = 'SELECT * FROM post WHERE id = ?';
         $state = $this->entityManager->getConnection()->prepare($sql);
         $state->bindValue(1, $postId);
 
@@ -44,5 +43,18 @@ final class PostStore implements PostRepositoryInterface
     {
         $this->entityManager->remove($post);
         $this->entityManager->flush();
+    }
+
+    public function getPage(int $size): array
+    {
+        //Fix that problem
+        $sql = 'SELECT TOP ? * FROM post';
+        $state = $this->entityManager->getConnection()->prepare($sql);
+        $state->bindValue(1, $size);
+
+        $state->execute();
+        $posts = $state->fetchAll();
+
+        return $posts;
     }
 }

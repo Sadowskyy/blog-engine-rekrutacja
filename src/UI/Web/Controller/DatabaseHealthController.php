@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\UI\Web\Controller;
 
@@ -8,7 +9,9 @@ namespace App\UI\Web\Controller;
 use App\App\Shared\Infrastructure\Peristance\Read\Repository\MySqlDatabase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/health')]
 class DatabaseHealthController
 {
     private MySqlDatabase $mysqlDatabase;
@@ -18,7 +21,8 @@ class DatabaseHealthController
         $this->mysqlDatabase = $mysqlDatabase;
     }
 
-    public function __invoke(Request $request): Response
+    #[Route(name: 'check_health', methods: ['GET'])]
+    public function checkHealth(Request $request): Response
     {
         $mysql = null;
 

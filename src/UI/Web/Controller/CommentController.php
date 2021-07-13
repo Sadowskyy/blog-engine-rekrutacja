@@ -7,11 +7,11 @@ namespace App\UI\Web\Controller;
 
 use App\App\Comment\Application\Command\CreateComment\CreateCommentCommand;
 use App\App\Comment\Application\Command\DeleteComment\DeleteCommentCommand;
-use App\App\Comment\Application\Command\UpdateCommentCommand;
+use App\App\Comment\Application\Command\UpdateComment\UpdateCommentCommand;
 use App\App\Comment\Application\Query\FindByCommentId\FindByCommentIdQuery;
 use App\App\Comment\Application\Query\FindByPostId\FindCommentsByPostIdQuery;
-use App\App\Post\Infrastructure\Web\CqrsController;
 
+use App\App\Shared\Infrastructure\Web\CqrsController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

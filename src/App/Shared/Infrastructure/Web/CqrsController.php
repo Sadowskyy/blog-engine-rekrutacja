@@ -1,8 +1,7 @@
 <?php
 
 
-namespace App\App\Post\Infrastructure\Web;
-
+namespace App\App\Shared\Infrastructure\Web;
 
 use App\App\Shared\Application\Command\CommandBusInterface;
 use App\App\Shared\Application\Command\CommandInterface;

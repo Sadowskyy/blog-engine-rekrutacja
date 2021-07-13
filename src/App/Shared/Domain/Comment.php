@@ -85,4 +85,9 @@ class Comment
     {
         $this->commentedPost = $post;
     }
+
+    public function updateContent(string $content)
+    {
+        $this->content = $content;
+    }
 }

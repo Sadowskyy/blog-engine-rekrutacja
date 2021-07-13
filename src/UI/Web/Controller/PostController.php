@@ -10,8 +10,7 @@ use App\App\Post\Application\Command\DeletePost\DeletePostCommand;
 use App\App\Post\Application\Command\UpdatePost\UpdatePostCommand;
 use App\App\Post\Application\Query\FindByPostId\FindPostByPostId;
 use App\App\Post\Application\Query\FindSpecifiedNumberOfPosts\FindPostsBySpecifiedNumberQuery;
-use App\App\Post\Infrastructure\Web\CqrsController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\App\Shared\Infrastructure\Web\CqrsController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,7 +20,7 @@ class PostController extends CqrsController
 {
 
     #[Route(name: 'create_post', methods: ['POST'])]
-    public function createAction(Request $request): JsonResponse
+    public function createAction(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
 

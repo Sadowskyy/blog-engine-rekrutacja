@@ -12,12 +12,12 @@ class CommentContentValidator
 {
     const MAX_CONTENT_LENGTH = 200;
 
-    public function isValid(string $content): bool
+    public function isValid(?string $content): bool
     {
-        if ($content > self::MAX_CONTENT_LENGTH) {
+        if (strlen($content) > self::MAX_CONTENT_LENGTH) {
             throw new TooLongCommentContentException();
         }
-        if ($content === null || $content < 8) {
+        if ($content === null || strlen($content) < 8) {
             throw new TooShortCommentContent();
         }
 
